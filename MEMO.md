@@ -31,6 +31,9 @@ Macで自由にパケットのフィルタリング、帯域制限、パケロ�
 https://spring-mt.hatenablog.com/entry/2022/09/22/234405
 
 
+action [direction] [log] [quick] [on interface] [af] [proto protocol]
+       [from src_addr [port src_port]] [to dst_addr [port dst_port]]
+       [flags tcp_flags] [state]
 
 
 シェルスクリプト独特の書き方なので、初めて見ると「暗号」のように見えますよね。 これらは**「複数の行をひとまとめにして、次のコマンドに一気に放り込む」**ためのテクニックです。
@@ -243,3 +246,31 @@ delay を 0ms, 50ms, 150ms と変えて、iperf3 のスループットがどう�
 それぞれのネットワーク制約をどのようにするかで評価指標は大きく変わる。また、トランスポート層においても　UDP（HTTP/3/QUIC）でもやった方が良い。
 また、iperf3 ではなく tc + netem（Linux）　でやっても良い。
 
+
+
+
+あなたが何を研究で主張するかでおすすめが変わります。
+
+A) 「Web上の解析基盤」を一般論として示したい（追試性重視）
+
+tc + netem（Linux）推し
+
+追試者が作りやすい
+
+OS/ネットワーク実験の文脈で通りが良い
+
+ただし 帯域はHTB/TBF等を併用が前提（論文にも書く）
+
+https://www.badunetworks.com/traffic-shaping-with-tc/?utm_source
+
+
+
+B) 「macOS/Safari/Apple環境でのブラウザ挙動」も含めて評価したい
+
+pf + dummynet 推し（あなたのコード路線でOK）
+
+macOSで“実ブラウザ”評価をするなら自然
+
+ただし UDP（HTTP/3/QUIC）を忘れないのが研究的に必須
+
+https://www.chromium.org/quic/?utm_source

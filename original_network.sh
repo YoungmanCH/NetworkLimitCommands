@@ -7,7 +7,7 @@ echo "y" | sudo dnctl -q flush
 sudo pfctl -d 2>/dev/null || true
 
 
-# 1. ネットワークルールの定義
+# 1. ネットワークルールの定義—
 
 # 予約語:            dummynet-anchor, anchor
 # dummynet-anchor:  帯域制限、遅延、パケットロスなどのルール。
@@ -55,8 +55,8 @@ sudo dnctl pipe "$UP_PIPE_ID" config \
 # 3. ネットワークのパイプの配管整備
 # [予約語] [方向] [対象(プロトコル / IP / PORT)] [予約語] [ID]
 PROTOCOL="tcp"
-echo "dummynet out quick proto $PROTOCOL from any to any pipe $UP_PIPE_ID" | sudo pfctl -a "$DUMMYNET_ANCHOR" -f -
 echo "dummynet in quick proto $PROTOCOL from any to any pipe $DOWN_PIPE_ID" | sudo pfctl -a "$DUMMYNET_ANCHOR" -f -
+echo "dummynet out quick proto $PROTOCOL from any to any pipe $UP_PIPE_ID" | sudo pfctl -a "$DUMMYNET_ANCHOR" -f -
 
 
 # 4. ネットワーク設定ON（OS上の全てのアプリ、サービスがこの制約を受ける）
@@ -74,10 +74,10 @@ echo "<-------------------計測方法----------------------->"
 
 echo "1. iperf でネットワーク測定する"
 echo "iperfのインストール: brew install iperf3"
-echo "セットアップ / 起動: iperf -s"
+echo "セットアップ / 起動: iperf3 -s"
 
-echo "Uplinkの計測: iperf -c localhost -t 5"
-echo "Downlinkの計測: iperf -c localhost -t 5 -R"
+echo "Uplinkの計測: iperf3 -c localhost -t 5"
+echo "Downlinkの計測: iperf3 -c localhost -t 5 -R"
 
 
 echo "2. speedtest でネットワーク測定する"
